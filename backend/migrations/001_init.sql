@@ -37,7 +37,6 @@ CREATE TABLE vencimiento_producto (
   cantidad           NUMERIC(12,3) NOT NULL CHECK (cantidad >= 0),
   estado             estado_vencimiento NOT NULL DEFAULT 'NORMAL'
 );
--- Create index for faster queries on product expiration dates
 CREATE INDEX idx_venc_producto ON vencimiento_producto(id_producto, fecha_vencimiento);
 
 CREATE TABLE venta (

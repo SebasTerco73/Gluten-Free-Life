@@ -61,7 +61,6 @@ export async function registrarVenta(
   input: VentaInput,
   opts: { sync?: boolean } = {}
 ): Promise<VentaResultado> {
-  // tx transaction: valida stock, inserta venta y detalle, reduce stock y evalúa stock crítico
   return tx(async (c) => {
     // Idempotencia (ventas offline reenviadas)
     if (input.uuid_cliente) {

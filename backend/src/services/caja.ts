@@ -13,7 +13,6 @@ const fechaOHoy = async (db: Db, f?: string) => {
 /** CierreCaja.consolidarTotales() — R11. Mercado Pago + Tarjeta se suman como "digital". */
 export async function resumenCaja(db: Db, fecha?: string) {
   const f = await fechaOHoy(db, fecha);
-  // R11: operaciones = cantidad de ventas registradas (estado='REGISTRADA') del día.
   const t = await q1<any>(
     `SELECT
         count(*)::int AS operaciones,
@@ -25,19 +24,16 @@ export async function resumenCaja(db: Db, fecha?: string) {
     [f],
     db
   );
-  // R11: anuladas = cantidad de ventas anuladas (estado='ANULADA') del día.
   const anuladas = await q1<any>(
     `SELECT count(*)::int AS n FROM venta WHERE estado='ANULADA' AND ${diaLocal('fecha_hora')} = $1::date`,
     [f],
     db
   );
-  // R11: cierre = cierre de caja del día (si existe).
   const cierre = await q1<any>(
     `SELECT c.*, u.nombre AS usuario_nombre FROM cierre_caja c JOIN usuario u USING (id_usuario) WHERE fecha=$1::date AND c.reabierta_en IS NULL`,
     [f],
     db
   );
-  // R11: ventas = listado de ventas registradas del día (estado='REGISTRADA').
   const ventas = await q<any>(
     `SELECT v.id_venta, v.numero_ticket, v.fecha_hora, v.total_cobrado, v.canal_pago, v.estado, u.nombre AS usuario_nombre
      FROM venta v JOIN usuario u USING (id_usuario)
@@ -45,7 +41,6 @@ export async function resumenCaja(db: Db, fecha?: string) {
     [f],
     db
   );
-  // R11: total_facturado = sumatoria de total_cobrado de las ventas registradas del día.
   return {
     fecha: f,
     operaciones: t.operaciones,
@@ -66,11 +61,10 @@ export async function cerrarCaja(
   input: { fecha?: string; efectivo_contado: number; fondo_inicial?: number; observacion?: string | null }
 ) {
   return tx(async (c) => {
-    // R11: bloqueo de la transacción para evitar que se cierre la misma caja desde otra sesión.
+    // Evita que dos cierres simultáneos del mismo día se pisen
     await q('SELECT pg_advisory_xact_lock(7001)', [], c);
     const r = await resumenCaja(c, input.fecha);
     if (r.cierre) throw conflict('La caja de ese día ya fue cerrada');
-    // fondo inicial, efectivo esperado y diferencia (R11)
     const fondo = round2(input.fondo_inicial ?? 0);
     const esperado = round2(r.efectivo + fondo);
     const diferencia = round2(input.efectivo_contado - esperado);

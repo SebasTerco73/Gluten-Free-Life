@@ -30,7 +30,6 @@ export const hashClave = (clave: string) => bcrypt.hashSync(clave, 10);
 export async function autenticar(usuarioLogin: string, clave: string): Promise<AuthUser | null> {
   const u = await q1<any>('SELECT * FROM usuario WHERE usuario_login = $1 AND activo = true', [usuarioLogin]);
   if (!u) return null;
-
   if (!bcrypt.compareSync(clave, u.clave_hash)) return null;
   return { id_usuario: u.id_usuario, nombre: u.nombre, usuario_login: u.usuario_login };
 }

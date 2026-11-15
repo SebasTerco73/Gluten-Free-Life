@@ -168,7 +168,7 @@ export async function generarExcelPedido(pedido: any, cfg: Record<string, string
       null,
       it.observacion || '',
     ]);
-    r.getCell(8).value = { formula: `E${r.number}*G${r.number}`, result: it.subtotal_estimado } as ExcelJS.CellFormulaValue;
+    r.getCell(8).value = { formula: `E${r.number}*G${r.number}`, result: it.subtotal_estimado };
     r.getCell(7).numFmt = '"$"#,##0.00';
     r.getCell(8).numFmt = '"$"#,##0.00';
     r.getCell(4).numFmt = '#,##0.###';
@@ -177,7 +177,7 @@ export async function generarExcelPedido(pedido: any, cfg: Record<string, string
   });
   const last = first + pedido.items.length - 1;
   const tot = ws.addRow(['', '', '', '', '', '', 'TOTAL ESTIMADO', null, '']);
-  tot.getCell(8).value = { formula: `SUM(H${first}:H${last})`, result: pedido.total_estimado } as ExcelJS.CellFormulaValue;
+  tot.getCell(8).value = { formula: `SUM(H${first}:H${last})`, result: pedido.total_estimado };
   tot.getCell(8).numFmt = '"$"#,##0.00';
   tot.getCell(7).font = { bold: true };
   tot.getCell(8).font = { bold: true, size: 12 };

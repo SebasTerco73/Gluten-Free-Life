@@ -139,42 +139,6 @@ Podés consultar la lista de requisitos en [`requirements.txt`](requirements.txt
    - Frontend: Abre tu navegador en `http://localhost:4000` (o el puerto expuesto).
    - Inicia sesión con las credenciales configuradas para la aplicación. En el primer arranque se aplican las migraciones y se cargan datos de demostración (solo si la base está vacía).
 
-### Instalador online para Windows
-
-El instalador automático prepara una PC Windows sin necesidad de configurar
-manualmente VS Code, Node.js ni PostgreSQL. Al ejecutarlo como administrador:
-
-1. Descarga e instala Node.js 22.
-2. Descarga e instala PostgreSQL 16.
-3. Crea la base de datos `gfl`.
-4. Instala las dependencias del backend y frontend.
-5. Compila la aplicación.
-6. Ejecuta las migraciones.
-7. Carga datos de demostración si la base está vacía.
-8. Genera una clave JWT aleatoria.
-9. Crea un acceso directo en el escritorio.
-10. Abre la aplicación en `http://localhost:4000`.
-
-Credenciales de demostración:
-
-```text
-Usuario: admin
-Contraseña: 1234
-```
-
-El instalador es online y necesita conexión a Internet durante la primera
-instalación. Los archivos del instalador se encuentran en
-[`installer/`](installer/), junto con una [guía detallada](GUIA-INSTALADOR-ONLINE.md).
-
-#### Cómo generar el `.exe`
-
-El `.exe` final debe compilarse en una PC Windows:
-
-1. Instalar [Inno Setup](https://jrsoftware.org/isinfo.php).
-2. Abrir [`installer/GlutenFreeLife.iss`](installer/GlutenFreeLife.iss).
-3. Presionar **Compile**.
-4. El resultado será `installer\output\GlutenFreeLife-Setup.exe`.
-
 ## Desarrollo local (sin Docker)
 
 Esta modalidad requiere Node.js 22, npm, PostgreSQL 16 y las herramientas

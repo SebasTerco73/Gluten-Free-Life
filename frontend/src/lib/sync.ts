@@ -80,7 +80,6 @@ export async function sincronizar(): Promise<{ n: number; fallidas: number; adve
   sincronizando = true;
   useConn.getState().set({ syncing: true });
   try {
-    // Se envían todas las ventas pendientes al servidor. El servidor devuelve un array de resultados (uno por venta) indicando si se sincronizó o no.
     const r = await post<{ resultados: any[]; sincronizadas: number; fallidas: number }>('/sync/ventas', {
       ventas: pend.map((v) => ({
         uuid_cliente: v.uuid_cliente,
