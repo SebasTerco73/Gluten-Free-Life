@@ -4,3 +4,4 @@ dist/
 backend/storage/
 *.log
 .DS_Store
+venv/
